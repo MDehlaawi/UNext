@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Queue</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        .container {
+            width: 80%;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        th, td {
+            padding: 15px;
+            border-bottom: 1px solid #ccc;
+            text-align: center;
+        }
+        th {
+            font-weight: bold;
+            background-color: #f5f5f5;
+        }
+        .deleteButton {
+            background-color: #e74c3c;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            padding: 5px 10px;
+            cursor: pointer;
+        }
+        .deleteButton:hover {
+            background-color: #c0392b;
+        }
+    </style>
+    <script src="https://cdn.jsdelivr.net/npm/sortablejs@1.14.0/Sortable.min.js"></script>
+</head>
+<body>
+    <div class="container">
+        <h1>Queue</h1>
+        <table>
+            <thead>
+                <tr>
+                    <th>Turn</th>
+                    <th>Patient Name</th>
+                    <th>MRN</th>
+                    <th>Phone Number</th>
+                    <th>Move</th>
+                </tr>
+            </thead>
+            <tbody id="patientQueue">
+                <!-- Patients will be added here -->
+            </tbody>
+        </table>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const patients = JSON.parse(localStorage.getItem('patients')) || [];
+            const queueList = document.getElementById('patientQueue');
+            
+            function renderQueue() {
+                queueList.innerHTML = '';
+                patients.forEach((patient, index) => {
+                    const row = document.createElement('tr');
+                    row.setAttribute('data-index', index);
+                    row.innerHTML = `
+                        <td>#${index + 1}</td>
+                        <td>${patient.name}</td>
+                        <td>${patient.mrn}</td>
+                        <td>${patient.phone}</td>
+                        <td><button class="deleteButton" data-index="${index}">NEXT</button></td>
+                    `;
+                    queueList.appendChild(row);
+                });
+                localStorage.setItem('patients', JSON.stringify(patients));
+            }
+            
+            queueList.addEventListener('click', function(event) {
+                if (event.target.classList.contains('deleteButton')) {
+                    const index = event.target.getAttribute('data-index');
+                    patients.splice(index, 1);
+                    renderQueue();
+                }
+            });
+
+            new Sortable(queueList, {
+                onEnd: function (event) {
+                    const itemEl = event.item;
+                    const fromIndex = event.oldIndex;
+                    const toIndex = event.newIndex;
+
+                    const movedPatient = patients.splice(fromIndex, 1)[0];
+                    patients.splice(toIndex, 0, movedPatient);
+
+                    patients.forEach((patient, index) => {
+                        patient.serialNumber = index + 1;
+                    });
+
+                    localStorage.setItem('patients', JSON.stringify(patients));
+                    renderQueue();
+                }
+            });
+
+            renderQueue();
+        });
+    </script>
+</body>
+</html>
