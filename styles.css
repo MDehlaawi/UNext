@@ -6,7 +6,7 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 100vh;
+    min-height: 100vh;
     background: linear-gradient(135deg, #95263A, #1C7E9C, #F5F9FA);
 }
 
@@ -16,6 +16,9 @@ body {
     padding: 20px;
     border-radius: 10px;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    width: 90%;
+    max-width: 600px;
+    margin: 10px;
 }
 
 input[type="text"], button {
@@ -23,12 +26,7 @@ input[type="text"], button {
     margin: 10px auto;
     padding: 10px;
     width: calc(100% - 40px);
-}
-
-.qr-code {
-    width: 100px;
-    height: 100px;
-    margin: 20px auto;
+    max-width: 500px;
 }
 
 button, .scan-btn {
@@ -60,7 +58,7 @@ ul li {
 
 /* queue.html specific styles */
 .queue-container {
-    width: 80%;
+    width: 90%;
     max-width: 800px;
     margin: 0 auto;
 }
@@ -98,4 +96,30 @@ ul li button {
 
 .deleteButton:hover {
     background-color: #c0392b;
+}
+
+/* Media queries for mobile responsiveness */
+@media (max-width: 600px) {
+    th, td {
+        padding: 8px;
+        font-size: 14px;
+    }
+    .deleteButton {
+        padding: 5px;
+        font-size: 12px;
+    }
+    .container {
+        width: 100%;
+    }
+}
+
+@media (max-width: 400px) {
+    th, td {
+        padding: 5px;
+        font-size: 12px;
+    }
+    .deleteButton {
+        padding: 4px;
+        font-size: 10px;
+    }
 }
