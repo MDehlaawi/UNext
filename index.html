@@ -24,13 +24,27 @@
         .button:hover {
             background-color: #95263A;
         }
+        #qrcode {
+            margin-top: 20px;
+            text-align: center;
+        }
     </style>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
 </head>
 <body>
     <div class="container">
         <h1>Welcome to UNext</h1>
-        <a href="lineUp.html" class="button">Line Up</a>
-        <a href="queue.html" class="button">Queue</a>
+        <button class="button" onclick="generateQRCode('lineUp.html')">Line Up</button>
+        <button class="button" onclick="generateQRCode('queue.html')">Queue</button>
+        <div id="qrcode"></div>
     </div>
+
+    <script>
+        function generateQRCode(page) {
+            const url = `${window.location.origin}/${page}`;
+            document.getElementById('qrcode').innerHTML = '';
+            new QRCode(document.getElementById("qrcode"), url);
+        }
+    </script>
 </body>
 </html>
